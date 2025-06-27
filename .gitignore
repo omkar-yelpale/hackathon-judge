@@ -26,3 +26,9 @@ dist-ssr
 
 # Claude resources
 claude-resources/
+
+# SQL migrations (keep these private)
+sql-migrations/
+
+# Implementation tracking
+IMPLEMENTATION_STATUS.md

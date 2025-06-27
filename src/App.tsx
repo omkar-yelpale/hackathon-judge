@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Login } from './components/Login'
 import { Dashboard } from './components/Dashboard'
+import { AddSubmissionForm } from './components/Submissions/AddSubmissionForm'
+import { Layout } from './components/Layout/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import './App.css'
 
@@ -15,6 +17,16 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/add-submission" 
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AddSubmissionForm />
+              </Layout>
             </ProtectedRoute>
           } 
         />
