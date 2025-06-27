@@ -132,7 +132,7 @@ export function AddSubmissionForm() {
                 <span>More Information (Optional)</span>
                 <Tooltip
                   label={
-                    <div className="space-y-1">
+                    <div className="space-y-1 w-72">
                       <p>Include details such as:</p>
                       <ul className="list-disc list-inside space-y-1">
                         <li>Source code URL (GitHub, GitLab, etc.)</li>
@@ -144,7 +144,6 @@ export function AddSubmissionForm() {
                     </div>
                   }
                   multiline
-                  width={300}
                   withArrow
                   position="top"
                 >
