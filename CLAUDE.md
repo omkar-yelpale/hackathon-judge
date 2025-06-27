@@ -45,6 +45,7 @@ yarn tsc --noEmit src/App.tsx
 - **Mantine** - UI components library (ONLY for inputs, modals, buttons, select dropdowns)
 - **Tailwind CSS** - Utility-first CSS framework for styling
 - **TanStack Query** - Data fetching and caching library
+- **Supabase** - Backend as a Service for authentication, database, and real-time subscriptions
 
 ### Project Structure
 ```
@@ -55,7 +56,9 @@ src/
 ├── index.css         # Global styles with Tailwind directives
 ├── vite-env.d.ts     # Vite TypeScript declarations
 ├── assets/           # Static assets (images, etc.)
-└── hooks/            # Custom React hooks (e.g., useExampleQuery.ts)
+├── hooks/            # Custom React hooks (e.g., useExampleQuery.ts)
+└── lib/              # Utility libraries and configurations
+    └── supabase.ts   # Supabase client configuration
 ```
 
 ### TypeScript Configuration
@@ -69,12 +72,46 @@ src/
 2. Vite bundles and optimizes for production
 3. Output to `dist/` directory
 
+### Environment Variables
+- Create `.env.local` file in project root (already gitignored)
+- Copy from `.env.example` and fill in your Supabase credentials
+- Required variables:
+  - `VITE_SUPABASE_URL` - Your Supabase project URL
+  - `VITE_SUPABASE_ANON_KEY` - Your Supabase anonymous key
+
 ## Key Development Patterns
 
 ### Component Development
 - Functional components with TypeScript interfaces
 - CSS modules or component-specific CSS files
 - Assets imported as ES modules
+
+### Responsive Design Requirements
+**IMPORTANT: All components MUST be responsive**
+- Design for mobile-first approach
+- Support all device sizes:
+  - Mobile phones (320px - 768px)
+  - Tablets (768px - 1024px)
+  - Laptops (1024px - 1440px)
+  - Desktops (1440px+)
+- Use Tailwind's responsive prefixes (sm:, md:, lg:, xl:, 2xl:)
+- Test components at multiple breakpoints
+- Ensure touch-friendly interfaces on mobile (min 44px tap targets)
+- Use flexible layouts (flexbox, grid) instead of fixed widths
+- Hide/show elements appropriately for different screen sizes
+
+Example responsive pattern:
+```tsx
+// Mobile-first responsive design
+<div className="px-4 sm:px-6 lg:px-8"> {/* Responsive padding */}
+  <h1 className="text-xl sm:text-2xl lg:text-3xl"> {/* Responsive text size */}
+    Title
+  </h1>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {/* Responsive grid */}
+  </div>
+</div>
+```
 
 ### UI Component Usage Guidelines
 **IMPORTANT: Mantine Usage Restrictions**
