@@ -1,8 +1,21 @@
 import { Button } from '@mantine/core'
+import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../hooks/useAuth'
+import { supabase } from '../lib/supabase'
 
 export function Login() {
   const { signInWithGoogle } = useAuth()
+
+  // Fetch submission count for preview
+  const { data: submissionCount } = useQuery({
+    queryKey: ['submissionCount'],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('submissions')
+        .select('*', { count: 'exact', head: true })
+      return count || 0
+    }
+  })
 
   const handleGoogleSignIn = async () => {
     try {
@@ -13,26 +26,31 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <div className="flex items-center justify-center mb-6">
-            <div className="flex items-center gap-2">
-              <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h1 className="text-3xl font-bold text-white">Judgify</h1>
-            </div>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <svg className="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 className="text-3xl font-bold text-white">Judgify</h1>
           </div>
           <h2 className="text-xl text-gray-300">
-            Welcome to the Hackathon Judging Platform
+            Hackathon Submission Portal
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Sign in to start evaluating innovative projects
+          <p className="mt-2 text-gray-400">
+            Submit and browse hackathon projects in one place
           </p>
+          {submissionCount !== undefined && submissionCount > 0 && (
+            <div className="mt-4">
+              <p className="text-purple-400 font-medium">
+                {submissionCount} {submissionCount === 1 ? 'project' : 'projects'} submitted
+              </p>
+            </div>
+          )}
         </div>
-        
-        <div className="bg-gray-800/50 backdrop-blur-sm py-8 px-4 shadow-2xl rounded-xl sm:px-10 border border-gray-700">
+
+        <div className="bg-gray-800 rounded-lg shadow-xl p-8">
           <Button
             onClick={handleGoogleSignIn}
             fullWidth
@@ -63,21 +81,16 @@ export function Login() {
             Sign in with Google
           </Button>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-600"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-800/50 text-gray-400">Secure authentication</span>
-              </div>
-            </div>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-400">
+              Sign in to submit your project or browse submissions
+            </p>
           </div>
         </div>
 
-        <div className="text-center">
+        <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
-            By signing in, you agree to evaluate projects fairly and maintain confidentiality
+            By signing in, you agree to participate fairly and respectfully
           </p>
         </div>
       </div>
